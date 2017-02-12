@@ -42,6 +42,9 @@ class VolunteersViewTeam extends JViewLegacy
 		$this->item->roles    = $this->get('TeamRoles');
 		$this->acl            = VolunteersHelper::acl('team', $this->item->id);
 
+		// Set team id in session
+		JFactory::getSession()->set('team', $this->item->id);
+
 		// Active / inactive
 		$this->item->active = ($this->item->date_ended == '0000-00-00');
 
@@ -104,23 +107,6 @@ class VolunteersViewTeam extends JViewLegacy
 		$this->document->setMetaData('og:image', $image, 'property');
 		$this->document->setMetaData('og:type', 'article', 'property');
 		$this->document->setMetaData('og:url', $url, 'property');
-
-		// Share Buttons
-		$layout      = new JLayoutFile('joomlarrssb');
-		$data        = (object) array(
-			'title'            => $title,
-			'image'            => $image,
-			'url'              => $url,
-			'displayEmail'     => true,
-			'displayFacebook'  => true,
-			'displayTwitter'   => true,
-			'displayGoogle'    => true,
-			'displayLinkedin'  => true,
-			'displayPinterest' => true,
-			'shorten'          => true,
-			'shortenKey'       => JComponentHelper::getParams('com_volunteers')->get('yourlsapikey')
-		);
-		$this->share = $layout->render($data);
 
 		// Add to pathway
 		$pathway = JFactory::getApplication()->getPathway();
